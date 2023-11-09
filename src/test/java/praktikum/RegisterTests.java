@@ -1,50 +1,17 @@
 package praktikum;
 
-import io.qameta.allure.Step;
-import io.restassured.RestAssured;
-import io.restassured.response.Response;
-import org.junit.After;
-import org.junit.Before;
+import io.qameta.allure.Description;
+import io.qameta.allure.junit4.DisplayName;
 import org.junit.Test;
-import org.openqa.selenium.html5.LocalStorage;
-import org.openqa.selenium.html5.WebStorage;
-import praktikum.User.UserClient;
-import praktikum.models.User;
 import praktikum.pom.ConstructorPage;
 import praktikum.pom.LoginPage;
 import praktikum.pom.RegisterPage;
 
-import static org.junit.Assert.assertEquals;
-import static praktikum.User.UserGenerator.*;
-
-
 public class RegisterTests extends BaseTest {
-    private static final String BASE_URI = "https://stellarburgers.nomoreparties.site";
-    private static UserClient userClient = new UserClient();
-
-    private static User randomUser = randomUser();
-    private static String userAccessToken;
-    @Step("delete user")
-    static void deleteUser(String userAccessToken) {
-        Response courierDeletionResponse = userClient.deleteUser(userAccessToken);
-        assertEquals("Не удалось удалить пользователя", 202, courierDeletionResponse.statusCode()); // удаление пользователя
-    }
-
-    @Step("get User's Access Token")
-    static String getUserAccessToken() {
-        LocalStorage localStorage = ((WebStorage) driver).getLocalStorage();
-        if (localStorage.getItem("accessToken") != null) {
-            return localStorage.getItem("accessToken").substring(7);
-        }
-        return null;
-    }
-
-    @Before
-    public void setUp() {
-        RestAssured.baseURI = BASE_URI;
-    }
 
     @Test
+    @DisplayName("successful Registration check")
+    @Description("проверка успешной регистрации пользователя")
     public void successfulRegistration() {
         ConstructorPage objConstructorPage = new ConstructorPage(driver);
         objConstructorPage.clickLoginButton();
@@ -64,6 +31,8 @@ public class RegisterTests extends BaseTest {
     }
 
     @Test
+    @DisplayName("registration With Short Password Shows Error")
+    @Description("попытка регистрации пользователя с паролем меньше 6 символов приводит к ошибке")
     public void registrationWithShortPasswordShowsError() {
         ConstructorPage objConstructorPage = new ConstructorPage(driver);
         objConstructorPage.clickLoginButton();
@@ -81,12 +50,5 @@ public class RegisterTests extends BaseTest {
         objLoginPage.clickLoginButton();
         objLoginPage.waitForLoginFailure();
         userAccessToken = getUserAccessToken();
-    }
-
-    @After
-    public void tearDown() {
-        if (userAccessToken != null) {
-            deleteUser(userAccessToken);
-        }
     }
 }

@@ -1,43 +1,16 @@
 package praktikum;
 
-import io.qameta.allure.Step;
-import io.restassured.RestAssured;
-import io.restassured.response.Response;
-import org.junit.After;
-import org.junit.Before;
+import io.qameta.allure.Description;
+import io.qameta.allure.junit4.DisplayName;
 import org.junit.Test;
-import praktikum.User.UserClient;
-import praktikum.models.User;
 import praktikum.pom.*;
 
-import static org.junit.Assert.assertEquals;
-import static praktikum.RegisterTests.deleteUser;
-import static praktikum.User.UserGenerator.*;
-
-
-
 public class PersonalAccountTests extends BaseTest {
-    private static final String BASE_URI = "https://stellarburgers.nomoreparties.site";
-    private static UserClient userClient = new UserClient();
-    private static User randomUser = randomUser();
-    private static String userAccessToken;
-
-    @Step("create user")
-    static String createUserAndGetUserAccessToken(User user) {
-        Response CreationResponse = userClient.createUser(user);
-        assertEquals("Неверный статус код создания курьера", 200, CreationResponse.statusCode()); // пользователя можно создать передав в ручку все обязательные поля, запрос возвращает правильный код ответа
-        assertEquals("Неверное тело ответа", true, CreationResponse.path("success")); // успешный запрос возвращает success: true;
-        return CreationResponse.path("accessToken").toString().substring(7);
-    }
-
-
-    @Before
-    public void setUp() {
-        RestAssured.baseURI = BASE_URI;
-    }
 
     @Test
-    public void constructorPageLoginButtonScenario() {
+    @DisplayName("personal Account Link Click Scenario")
+    @Description("проверка перехода в личный кабинет по клику на ссылку «Личный кабинет»")
+    public void personalAccountLinkClickScenario() {
         ConstructorPage objConstructorPage = new ConstructorPage(driver);
         objConstructorPage.clickLoginButton();
 
@@ -54,6 +27,8 @@ public class PersonalAccountTests extends BaseTest {
     }
 
     @Test
+    @DisplayName("persona lAccount Page Constructor Link Scenario")
+    @Description("проверка перехода из личного кабинета в конструктор по клику на ссылку «Конструктор»")
     public void personalAccountPageConstructorLinkScenario() {
         ConstructorPage objConstructorPage = new ConstructorPage(driver);
         objConstructorPage.clickLoginButton();
@@ -73,6 +48,8 @@ public class PersonalAccountTests extends BaseTest {
     }
 
     @Test
+    @DisplayName("personal Account Page Logo Scenario")
+    @Description("проверка перехода из личного кабинета в конструктор по клику на логотип Stellar Burgers")
     public void personalAccountPageLogoScenario() {
         ConstructorPage objConstructorPage = new ConstructorPage(driver);
         objConstructorPage.clickLoginButton();
@@ -92,6 +69,8 @@ public class PersonalAccountTests extends BaseTest {
     }
 
     @Test
+    @DisplayName("personal Account Page Logout Scenario")
+    @Description("проверка выхода из аккаунта по клику по кнопке «Выйти» в личном кабинете")
     public void personalAccountPageLogoutScenario() {
         ConstructorPage objConstructorPage = new ConstructorPage(driver);
         objConstructorPage.clickLoginButton();
@@ -109,12 +88,5 @@ public class PersonalAccountTests extends BaseTest {
         personalAccountPage.clickLogoutButton();
 
         personalAccountPage.waitForLoginPageSuccess();
-    }
-
-    @After
-    public void tearDown() {
-        if (userAccessToken != null) {
-            deleteUser(userAccessToken);
-        }
     }
 }

@@ -1,40 +1,17 @@
 package praktikum;
 
-import io.qameta.allure.Step;
-import io.restassured.RestAssured;
-import io.restassured.response.Response;
-import org.junit.After;
-import org.junit.Before;
+import io.qameta.allure.Description;
+import io.qameta.allure.junit4.DisplayName;
 import org.junit.Test;
-import org.openqa.selenium.html5.LocalStorage;
-import org.openqa.selenium.html5.WebStorage;
-import praktikum.User.UserClient;
-import praktikum.models.User;
 import praktikum.pom.ConstructorPage;
 import praktikum.pom.LoginPage;
-import praktikum.pom.PersonalAccountPage;
-import praktikum.pom.RegisterPage;
-
-import static org.junit.Assert.assertEquals;
-import static praktikum.LoginTests.createUserAndGetUserAccessToken;
-import static praktikum.RegisterTests.deleteUser;
-import static praktikum.User.UserGenerator.*;
-
 
 public class ConstructorTests extends BaseTest {
-    private static final String BASE_URI = "https://stellarburgers.nomoreparties.site";
-    private static UserClient userClient = new UserClient();
-
-    private static User randomUser = randomUser();
-    private static String userAccessToken;
-
-    @Before
-    public void setUp() {
-        RestAssured.baseURI = BASE_URI;
-    }
 
     @Test
-    public void bunsPartition() {
+    @DisplayName("sections Transitions check")
+    @Description("проверка переходов к разделам «Булки», «Соусы», «Начинки» в разделе «Конструктор»")
+    public void sectionsTransitions() {
         ConstructorPage objConstructorPage = new ConstructorPage(driver);
         objConstructorPage.clickLoginButton();
 
@@ -53,14 +30,6 @@ public class ConstructorTests extends BaseTest {
 
         objConstructorPage.clickBunsNavItem();
         objConstructorPage.waitForBuns();
-
-    }
-
-    @After
-    public void tearDown() {
-        if (userAccessToken != null) {
-            deleteUser(userAccessToken);
-        }
     }
 }
 

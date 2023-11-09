@@ -1,47 +1,18 @@
 package praktikum;
 
-import io.qameta.allure.Step;
-import io.restassured.RestAssured;
-import io.restassured.response.Response;
-import org.junit.After;
-import org.junit.Before;
+import io.qameta.allure.Description;
+import io.qameta.allure.junit4.DisplayName;
 import org.junit.Test;
-import org.openqa.selenium.html5.LocalStorage;
-import org.openqa.selenium.html5.WebStorage;
-import praktikum.User.UserClient;
-import praktikum.models.User;
 import praktikum.pom.ConstructorPage;
 import praktikum.pom.LoginPage;
 import praktikum.pom.PasswordResetPage;
 import praktikum.pom.RegisterPage;
 
-import static org.junit.Assert.assertEquals;
-import static praktikum.RegisterTests.deleteUser;
-import static praktikum.RegisterTests.getUserAccessToken;
-import static praktikum.User.UserGenerator.*;
-
-
 public class LoginTests extends BaseTest {
-    private static final String BASE_URI = "https://stellarburgers.nomoreparties.site";
-    private static UserClient userClient = new UserClient();
-
-    private static User randomUser = randomUser();
-    private static String userAccessToken;
-
-    @Step("create user")
-    static String createUserAndGetUserAccessToken(User user) {
-        Response CreationResponse = userClient.createUser(user);
-        assertEquals("Неверный статус код создания курьера", 200, CreationResponse.statusCode()); // пользователя можно создать передав в ручку все обязательные поля, запрос возвращает правильный код ответа
-        assertEquals("Неверное тело ответа", true, CreationResponse.path("success")); // успешный запрос возвращает success: true;
-        return CreationResponse.path("accessToken").toString().substring(7);
-    }
-
-    @Before
-    public void setUp() {
-        RestAssured.baseURI = BASE_URI;
-    }
 
     @Test
+    @DisplayName("constructor Page Login Button Scenario")
+    @Description("проверка входа в аккаунт по клику по кнопке «Войти в аккаунт» на главной странице")
     public void constructorPageLoginButtonScenario() {
         ConstructorPage objConstructorPage = new ConstructorPage(driver);
         objConstructorPage.clickLoginButton();
@@ -55,6 +26,8 @@ public class LoginTests extends BaseTest {
     }
 
     @Test
+    @DisplayName("constructor Page Personal Account Link Scenario")
+    @Description("проверка входа в аккаунт по клику по кнопке «Личный кабинет» на главной странице")
     public void constructorPagePersonalAccountLinkScenario() {
         ConstructorPage objConstructorPage = new ConstructorPage(driver);
         objConstructorPage.clickPersonalAccountLink();
@@ -68,6 +41,8 @@ public class LoginTests extends BaseTest {
     }
 
     @Test
+    @DisplayName("register Page Login Link Scenario")
+    @Description("проверка входа в аккаунт по клику по кнопке «Войти» на странице регистрации")
     public void registerPageLoginLinkScenario() {
 
         ConstructorPage objConstructorPage = new ConstructorPage(driver);
@@ -86,6 +61,8 @@ public class LoginTests extends BaseTest {
     }
 
     @Test
+    @DisplayName("password Reset Page Login Link Scenario")
+    @Description("проверка входа в аккаунт по клику по кнопке «Войти» на странице восстановления пароля")
     public void passwordResetPageLoginLinkScenario() {
 
         ConstructorPage objConstructorPage = new ConstructorPage(driver);
@@ -102,13 +79,5 @@ public class LoginTests extends BaseTest {
         objLoginPage.fillInLoginFields(randomUser.getEmail(), randomUser.getPassword());
         objLoginPage.clickLoginButton();
         objConstructorPage.waitForLoginSuccess();
-    }
-
-
-    @After
-    public void tearDown() {
-        if (userAccessToken != null) {
-            deleteUser(userAccessToken);
-        }
     }
 }
