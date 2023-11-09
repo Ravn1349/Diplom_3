@@ -1,6 +1,7 @@
 package praktikum.pom;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -18,7 +19,7 @@ public class ConstructorPage {
     private By stuffingsNavItem = By.xpath(".//span[text()='Начинки']");
     private By saucesNavItem = By.xpath(".//span[text()='Соусы']");
     private By bunsNavItem = By.xpath(".//span[text()='Булки']");
-    private By stuffingsHeader = By.xpath(".//h2[text()='Начинки']");
+    public By stuffingsHeader = By.xpath(".//h2[text()='Начинки']");
     private By saucesHeader = By.xpath(".//h2[text()='Соусы']");
     private By bunsHeader = By.xpath(".//h2[text()='Булки']");
 
@@ -66,21 +67,20 @@ public class ConstructorPage {
         new WebDriverWait(driver, Duration.ofSeconds(10))
                 .until(ExpectedConditions.elementToBeClickable(orderButton));
     }
-    public void waitForSauces() {
-        new WebDriverWait(driver, Duration.ofSeconds(10))
-                .until(ExpectedConditions.visibilityOf(driver.findElement(saucesHeader)));
+
+    public Point getBunsHeaderCoordinates() {
+        return driver.findElement(bunsHeader).getLocation();
     }
 
-    public void waitForStuffings() {
-        new WebDriverWait(driver, Duration.ofSeconds(10))
-                .until(ExpectedConditions.visibilityOf(driver.findElement(stuffingsHeader)));
+    public String getBunsHeaderMarginTop() {
+        return driver.findElement(bunsHeader).getCssValue("margin-top");
     }
 
-    public void waitForBuns() {
-        new WebDriverWait(driver, Duration.ofSeconds(10))
-                .until(ExpectedConditions.visibilityOf(driver.findElement(bunsHeader)));
+    public Point getStuffingsHeaderCoordinates() {
+        return driver.findElement(stuffingsHeader).getLocation();
     }
 
-
-
+    public Point getSaucesHeaderCoordinates() {
+        return driver.findElement(saucesHeader).getLocation();
+    }
 }

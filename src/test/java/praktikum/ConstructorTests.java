@@ -3,8 +3,11 @@ package praktikum;
 import io.qameta.allure.Description;
 import io.qameta.allure.junit4.DisplayName;
 import org.junit.Test;
-import praktikum.pom.ConstructorPage;
-import praktikum.pom.LoginPage;
+import org.openqa.selenium.Point;
+
+import java.awt.*;
+
+import static org.junit.Assert.assertEquals;
 
 public class ConstructorTests extends BaseTest {
 
@@ -12,24 +15,24 @@ public class ConstructorTests extends BaseTest {
     @DisplayName("sections Transitions check")
     @Description("проверка переходов к разделам «Булки», «Соусы», «Начинки» в разделе «Конструктор»")
     public void sectionsTransitions() {
-        ConstructorPage objConstructorPage = new ConstructorPage(driver);
         objConstructorPage.clickLoginButton();
 
-        LoginPage objLoginPage = new LoginPage(driver);
         userAccessToken = createUserAndGetUserAccessToken(randomUser);
 
         objLoginPage.fillInLoginFields(randomUser.getEmail(), randomUser.getPassword());
         objLoginPage.clickLoginButton();
         objConstructorPage.waitForLoginSuccess();
 
+        Point topLeftCoordinates = objConstructorPage.getBunsHeaderCoordinates().moveBy(0, -Integer.parseInt(objConstructorPage.getBunsHeaderMarginTop().replace("px", "")));
+
         objConstructorPage.clickStuffingsNavItem();
-        objConstructorPage.waitForStuffings();
+        assertEquals(topLeftCoordinates, objConstructorPage.getStuffingsHeaderCoordinates());
 
         objConstructorPage.clickSaucesNavItem();
-        objConstructorPage.waitForSauces();
+        assertEquals(topLeftCoordinates, objConstructorPage.getSaucesHeaderCoordinates());
 
         objConstructorPage.clickBunsNavItem();
-        objConstructorPage.waitForBuns();
+        assertEquals(topLeftCoordinates, objConstructorPage.getBunsHeaderCoordinates());
     }
 }
 

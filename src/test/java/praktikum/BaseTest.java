@@ -10,6 +10,7 @@ import org.openqa.selenium.html5.LocalStorage;
 import org.openqa.selenium.html5.WebStorage;
 import praktikum.User.UserClient;
 import praktikum.models.User;
+import praktikum.pom.*;
 
 import static org.junit.Assert.assertEquals;
 import static praktikum.User.UserGenerator.randomUser;
@@ -20,6 +21,11 @@ public class BaseTest {
 
     static WebDriver driver;
     static final String BASE_URI = "https://stellarburgers.nomoreparties.site";
+    static ConstructorPage objConstructorPage;
+    static LoginPage objLoginPage;
+    static PasswordResetPage objPasswordResetPage;
+    static PersonalAccountPage objPersonalAccountPage;
+    static RegisterPage objRegisterPage;
     static UserClient userClient = new UserClient();
     static User randomUser = randomUser();
     static String userAccessToken;
@@ -50,6 +56,12 @@ public class BaseTest {
     @Before
     public void startUp() {
         driver = createWebDriver();
+
+        objConstructorPage = new ConstructorPage(driver);
+        objLoginPage = new LoginPage(driver);
+        objPasswordResetPage = new PasswordResetPage(driver);
+        objPersonalAccountPage = new PersonalAccountPage(driver);
+        objRegisterPage = new RegisterPage(driver);
 
         driver.get(MAIN_PAGE_URL);
         RestAssured.baseURI = BASE_URI;
