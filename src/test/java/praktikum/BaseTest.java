@@ -72,7 +72,7 @@ public class BaseTest {
         if (userAccessToken != null) {
             deleteUser(userAccessToken);
         }
-
+        userAccessToken = null;
         driver.quit();
     }
 }
