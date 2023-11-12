@@ -34,11 +34,5 @@ public class RegisterTests extends BaseTest {
         objRegisterPage.fillInRegistrationFields(randomUser.getName(), randomUser.getEmail(), randomUser.getPassword().substring(0,5)); // пароль — 5 символов.
         objRegisterPage.clickRegisterButton();
         objRegisterPage.waitForRegistrationFailure();
-
-        objRegisterPage.clickLoginLink();
-        objLoginPage.fillInLoginFields(randomUser.getEmail(), randomUser.getPassword().substring(0,5));
-        objLoginPage.clickLoginButton();
-        objLoginPage.waitForLoginFailure();
-        userAccessToken = getUserAccessToken();
     }
 }

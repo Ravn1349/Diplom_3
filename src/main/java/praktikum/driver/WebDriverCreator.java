@@ -5,6 +5,12 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
 public class WebDriverCreator {
+    /*
+    Переменные окружения, прописанные в системе:
+    BROWSER_DRIVERS - путь к папке с драйверами для браузеров
+    YANDEX_BROWSER_DRIVER_FILENAME - имя файла драйвера Яндекс браузера (хромдрайвер)
+    YANDEX_BROWSER_PATH - путь к исполняемому файлу Яндекс браузера в системе
+     */
    
     public static WebDriver createWebDriver() {
         String browser = System.getProperty("browser");
